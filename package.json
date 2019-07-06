@@ -7,13 +7,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "azure-cognitiveservices-imagesearch": "^2.0.0",
+    "ms-rest-azure": "^2.6.0",
     "react": "16.8.3",
     "react-native": "0.59.10",
     "unirest": "^0.6.0"
   },
   "devDependencies": {
     "@babel/core": "7.4.5",
-    "@babel/runtime": "7.4.5",
+    "@babel/runtime": "^7.4.5",
     "babel-jest": "24.8.0",
     "jest": "24.8.0",
     "metro-react-native-babel-preset": "0.54.1",

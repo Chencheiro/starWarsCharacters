@@ -6,18 +6,29 @@ import {
   View,
   ScrollView,
   Dimensions,
-  SafeAreaView
+  SafeAreaView,
+  Image,
 } from 'react-native';
 
 import CharacterCard from "./compoents/characterCard";
 
 
-
+//APP
 type Props = {};
 export default class App extends Component<Props> {
   state = {
     characters: [],
-    loading: false
+    loading: false,
+    currentImg: null
+  }
+
+  getImage = async (searchTerm) => {
+    const url = `https://api.giphy.com/v1/gifs/search?api_key=jNrv3kupwbQ5YQ48kcrqFDU37RppJe3C&q=${searchTerm}&limit=5&offset=0&rating=G&lang=en`
+
+    let characterData = await fetch(url)
+    let characterImageUrl = await characterData.json()
+
+    return characterImageUrl.data[0].images.downsized.url
   }
 
   storeInState = (data) => {
@@ -58,12 +69,18 @@ export default class App extends Component<Props> {
     this.fetchCarachters(url)
   }
 
+
+
   render() {
-    const characters = this.state.characters.map((character, index) => (
-      <View key={index} style={styles.card}>
-        <Text>{character.name}</Text>
-      </View>
-    ))
+    const characters = this.state.characters.map((character, index) => {
+      return(
+        <View key={index} style={styles.card}>
+          <Text>{character.name}</Text>
+          <Image style={{width: 50, height: 50}} source={{uri: this.getImage(character.name)}}/>
+        </View>
+        )
+      })
+
     const { loading } = this.state
     if (loading){
       return(
