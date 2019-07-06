@@ -19,17 +19,32 @@ export default class App extends Component<Props> {
   state = {
     characters: [],
     loading: false,
-    currentImg: null
+    currentImg: null,
+    images: [],
   }
 
-  getImage = async (searchTerm) => {
+ /* getImage = async (searchTerm) => {
     const url = `https://api.giphy.com/v1/gifs/search?api_key=jNrv3kupwbQ5YQ48kcrqFDU37RppJe3C&q=${searchTerm}&limit=5&offset=0&rating=G&lang=en`
 
     let characterData = await fetch(url)
     let characterImageUrl = await characterData.json()
-
+    //console.log(characterImageUrl)
     return characterImageUrl.data[0].images.downsized.url
   }
+
+  imageUrls = async () => {
+    let i=0;
+    let urllist=[]
+    for(i;i< this.state.characters.length;i++){
+      const url = `https://api.giphy.com/v1/gifs/search?api_key=jNrv3kupwbQ5YQ48kcrqFDU37RppJe3C&q=${this.state.characters[i].name}&limit=5&offset=0&rating=G&lang=en`
+      const response = await fetch(url)
+      const json = await response.json()
+      urllist.push(json.items[0])
+      console.log({urllist})
+    }
+    return 0
+  }*/
+
 
   storeInState = (data) => {
     let tempList = this.state.characters
@@ -40,7 +55,7 @@ export default class App extends Component<Props> {
     })
   }
 
-  fetchCarachters = (url) => {
+  fetchCharacters = (url) => {
     fetch(url)
         .then(res => res.json())
         .then(data => {
@@ -53,12 +68,15 @@ export default class App extends Component<Props> {
           }
           else{
             this.storeInState(data)
-            this.fetchCarachters(data.next)
+            this.fetchCharacters(data.next)
           }
         })
         .catch(err => console.log(err))
   }
 
+  /*onError = (character, e) =>{
+    console.log(character, e)
+  }*/
 
   componentWillMount() {
     this.setState({
@@ -66,17 +84,17 @@ export default class App extends Component<Props> {
       loading: true
     })
     const url = 'https://swapi.co/api/people'
-    this.fetchCarachters(url)
+    this.fetchCharacters(url)
+
+    //this.imageUrls()
   }
-
-
 
   render() {
     const characters = this.state.characters.map((character, index) => {
       return(
         <View key={index} style={styles.card}>
-          <Text>{character.name}</Text>
-          <Image style={{width: 50, height: 50}} source={{uri: this.getImage(character.name)}}/>
+          <Text style={{fontSize: 16, fontWeight: 'bold', color: '#333'}}>{character.name}</Text>
+          <Image style={{width: 150, height: 150, marginTop: 10}} source={{uri: 'https://lumiere-a.akamaihd.net/v1/images/Darth-Vader_6bda9114.jpeg?region=0%2C23%2C1400%2C785&width=960'}}/>
         </View>
         )
       })
@@ -85,29 +103,33 @@ export default class App extends Component<Props> {
     if (loading){
       return(
         <View style={styles.container}>
-          <Text>Lodin...</Text>
+          <Text style={{color: '#FFD700', fontSize: 25}}>Loading...</Text>
         </View>
       )
     }
     else {
       return (
-        <ScrollView style={styles.scrollContainer}>
-          <SafeAreaView>
-            <View style={styles.container}>
-              <Text>ola soi una aplikasion de ayoes</Text>
-              {/*<CharacterCard characters={this.state.characters} />*/}
-              {characters}
-            </View>
-          </SafeAreaView>
-        </ScrollView>
+        <SafeAreaView style={styles.safeArea}>
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
+            {characters}
+          </ScrollView>
+        </SafeAreaView>
       )
     }
   }
 }
 
 const styles = StyleSheet.create({
+  safeArea:{
+    flex: 0,
+    backgroundColor: '#4e677b'
+  },
   scrollContainer: {
-    flex: 1
+    flexGrow: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 2,
+    backgroundColor: '#000'
   },
   container: {
     flex: 1,
@@ -115,13 +137,27 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     padding: 2,
     justifyContent: 'center',
-    alignItems: 'center'
-
+    alignItems: 'center',
+    backgroundColor: '#000'
   },
   card: {
-    margin: 2,
-    width: Dimensions.get('window').width / 2 -6,
+    margin: 5,
+    paddingTop: 10,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: Dimensions.get('window').width / 2 -15,
     height: 200,
-    backgroundColor: '#f1c40f'
+    backgroundColor: '#FFD700',
+    justifyContent: 'center'
   }
 });
+
+/*<ScrollView style={styles.scrollContainer}>
+          <SafeAreaView style={{backgroundColor: '#FFD700'}}>
+            <View style={styles.container}>
+              <Text>ola soi una aplikasion de ayoes</Text>
+              <CharacterCard characters={this.state.characters} />
+              {characters}
+            </View>
+          </SafeAreaView>
+        </ScrollView>*/
