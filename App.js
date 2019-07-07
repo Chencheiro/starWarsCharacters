@@ -8,6 +8,7 @@ import {
   Dimensions,
   SafeAreaView,
   Image,
+  StatusBar
 } from 'react-native';
 
 import CharacterCard from "./compoents/characterCard";
@@ -94,7 +95,7 @@ export default class App extends Component<Props> {
       return(
         <View key={index} style={styles.card}>
           <Text style={{fontSize: 16, fontWeight: 'bold', color: '#333'}}>{character.name}</Text>
-          <Image style={{width: 150, height: 150, marginTop: 10}} source={{uri: 'https://lumiere-a.akamaihd.net/v1/images/Darth-Vader_6bda9114.jpeg?region=0%2C23%2C1400%2C785&width=960'}}/>
+          <Image style={{width: 150, height: 150, marginTop: 10}} source={require('./img/20.jpg')}/>
         </View>
         )
       })
@@ -110,7 +111,9 @@ export default class App extends Component<Props> {
     else {
       return (
         <SafeAreaView style={styles.safeArea}>
+          <StatusBar barStyle='light-content'/>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
+            {/*<CharacterCard img={this.state.img}/>*/}
             {characters}
           </ScrollView>
         </SafeAreaView>
@@ -122,13 +125,14 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   safeArea:{
     flex: 0,
-    backgroundColor: '#4e677b'
+    backgroundColor: '#000'
   },
   scrollContainer: {
     flexGrow: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    padding: 2,
+    paddingLeft: 5,
+    paddingRight: 5,
     backgroundColor: '#000'
   },
   container: {
@@ -151,13 +155,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
-
-/*<ScrollView style={styles.scrollContainer}>
-          <SafeAreaView style={{backgroundColor: '#FFD700'}}>
-            <View style={styles.container}>
-              <Text>ola soi una aplikasion de ayoes</Text>
-              <CharacterCard characters={this.state.characters} />
-              {characters}
-            </View>
-          </SafeAreaView>
-        </ScrollView>*/
