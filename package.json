@@ -10,7 +10,7 @@
     "azure-cognitiveservices-imagesearch": "^2.0.0",
     "ms-rest-azure": "^2.6.0",
     "react": "16.8.3",
-    "react-native": "0.59.10",
+    "react-native": "0.62.3",
     "unirest": "^0.6.0"
   },
   "devDependencies": {
